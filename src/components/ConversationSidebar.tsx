@@ -53,7 +53,7 @@ const ConversationSidebar = ({ currentSessionId, onSelectSession, onNewChat }: C
   return (
     <div
       className={cn(
-        "h-screen bg-white border-r border-secondary/20 transition-all duration-300 shadow-lg",
+        "bg-white border-r border-secondary/20 transition-all duration-300 shadow-lg",
         isCollapsed ? "w-16" : "w-64"
       )}
     >
