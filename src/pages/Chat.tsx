@@ -6,7 +6,6 @@ import ChatMessage from '@/components/ChatMessage';
 import ChatInput from '@/components/ChatInput';
 import ConversationSidebar from '@/components/ConversationSidebar';
 import { useToast } from '@/components/ui/use-toast';
-import { Bolt } from 'lucide-react';
 
 interface Message {
   content: string;
@@ -106,9 +105,11 @@ const Chat = () => {
             <h1 className="text-4xl font-bold text-primary mb-2">Maiers Electronic</h1>
             <p className="text-lg text-primary/90">First electrician with AI assistant</p>
           </div>
-          <div className="flex items-center gap-2">
-            <Bolt className="h-10 w-10 text-primary" />
-          </div>
+          <img 
+            src="/lovable-uploads/d171434d-dd9d-499c-b084-5ac32cdf1b0c.png" 
+            alt="Electrician Logo" 
+            className="h-16 w-16"
+          />
         </div>
       </header>
       
