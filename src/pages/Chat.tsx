@@ -99,8 +99,8 @@ const Chat = () => {
   };
 
   return (
-    <>
-      <div className="bg-white py-6 px-4 border-b-2 border-primary">
+    <div className="flex flex-col h-screen">
+      <header className="bg-white py-6 px-4 border-b-2 border-primary flex-none">
         <div className="flex items-center justify-between max-w-5xl mx-auto w-full">
           <div className="text-left">
             <h1 className="text-4xl font-bold text-primary mb-2">Maiers Electronic</h1>
@@ -110,17 +110,17 @@ const Chat = () => {
             <Bolt className="h-10 w-10 text-primary" />
           </div>
         </div>
-      </div>
+      </header>
       
-      <div className="flex h-[calc(100vh-88px)] bg-background">
+      <main className="flex flex-1 min-h-0">
         <ConversationSidebar
           currentSessionId={sessionId}
           onSelectSession={setSessionId}
           onNewChat={handleNewChat}
         />
         
-        <div className="flex-1 flex flex-col">
-          <div className="flex-1 overflow-y-auto p-4 bg-background">
+        <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 overflow-y-auto p-4">
             {messages.map((message, index) => (
               <ChatMessage
                 key={index}
@@ -138,8 +138,8 @@ const Chat = () => {
           
           <ChatInput onSend={handleSend} disabled={loading} />
         </div>
-      </div>
-    </>
+      </main>
+    </div>
   );
 };
 
