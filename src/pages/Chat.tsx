@@ -6,6 +6,7 @@ import ChatMessage from '@/components/ChatMessage';
 import ChatInput from '@/components/ChatInput';
 import ConversationSidebar from '@/components/ConversationSidebar';
 import { useToast } from '@/components/ui/use-toast';
+import { Bolt } from 'lucide-react';
 
 interface Message {
   content: string;
@@ -106,9 +107,16 @@ const Chat = () => {
       />
       
       <div className="flex-1 flex flex-col">
-        <div className="bg-white py-6 px-4 text-center border-b-2 border-primary">
-          <h1 className="text-4xl font-bold text-primary mb-2">Maiers Electronic</h1>
-          <p className="text-lg text-primary/90">First electrician with AI assistant</p>
+        <div className="bg-white py-6 px-4 border-b-2 border-primary">
+          <div className="flex items-center justify-between max-w-5xl mx-auto w-full">
+            <div className="flex items-center gap-2">
+              <Bolt className="h-10 w-10 text-primary" />
+            </div>
+            <div className="text-right">
+              <h1 className="text-4xl font-bold text-primary mb-2">Maiers Electronic</h1>
+              <p className="text-lg text-primary/90">First electrician with AI assistant</p>
+            </div>
+          </div>
         </div>
         <div className="flex-1 overflow-y-auto p-4 bg-background">
           {messages.map((message, index) => (
