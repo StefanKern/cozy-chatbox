@@ -106,9 +106,9 @@ const Chat = () => {
       />
       
       <div className="flex-1 flex flex-col">
-        <div className="bg-primary py-6 px-4 text-center">
-          <h1 className="text-4xl font-bold text-white mb-2">Maiers Electronic</h1>
-          <p className="text-lg text-white/90">First electrician with AI assistant</p>
+        <div className="bg-white py-6 px-4 text-center border-b-2 border-primary">
+          <h1 className="text-4xl font-bold text-primary mb-2">Maiers Electronic</h1>
+          <p className="text-lg text-primary/90">First electrician with AI assistant</p>
         </div>
         <div className="flex-1 overflow-y-auto p-4 bg-background">
           {messages.map((message, index) => (
