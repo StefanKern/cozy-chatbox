@@ -10,10 +10,10 @@ const ChatMessage = ({ content, type }: ChatMessageProps) => {
   return (
     <div
       className={cn(
-        "px-4 py-2 rounded-lg max-w-[80%] mb-4",
+        "px-4 py-2 rounded-lg max-w-[80%] mb-4 shadow-md",
         type === 'human' 
           ? "ml-auto bg-primary text-white" 
-          : "mr-auto bg-accent text-foreground"
+          : "mr-auto bg-accent text-foreground border border-secondary/20"
       )}
     >
       {type === 'ai' ? (

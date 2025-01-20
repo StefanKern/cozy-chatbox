@@ -20,13 +20,13 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border-t border-accent bg-chatbg">
+    <form onSubmit={handleSubmit} className="p-4 border-t border-secondary/20 bg-white shadow-lg">
       <div className="flex gap-2">
         <Textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type a message..."
-          className="resize-none bg-accent text-foreground"
+          className="resize-none bg-chatbg text-foreground border-secondary/20"
           disabled={disabled}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -35,7 +35,11 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
             }
           }}
         />
-        <Button type="submit" disabled={disabled || !message.trim()}>
+        <Button 
+          type="submit" 
+          disabled={disabled || !message.trim()}
+          className="bg-primary hover:bg-primary/90 text-white"
+        >
           <Send className="h-4 w-4" />
         </Button>
       </div>
