@@ -99,44 +99,47 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      <ConversationSidebar
-        currentSessionId={sessionId}
-        onSelectSession={setSessionId}
-        onNewChat={handleNewChat}
-      />
-      
-      <div className="flex-1 flex flex-col">
-        <div className="bg-white py-6 px-4 border-b-2 border-primary">
-          <div className="flex items-center justify-between max-w-5xl mx-auto w-full">
-            <div className="text-left">
-              <h1 className="text-4xl font-bold text-primary mb-2">Maiers Electronic</h1>
-              <p className="text-lg text-primary/90">First electrician with AI assistant</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Bolt className="h-10 w-10 text-primary" />
-            </div>
+    <>
+      <div className="bg-white py-6 px-4 border-b-2 border-primary">
+        <div className="flex items-center justify-between max-w-5xl mx-auto w-full">
+          <div className="text-left">
+            <h1 className="text-4xl font-bold text-primary mb-2">Maiers Electronic</h1>
+            <p className="text-lg text-primary/90">First electrician with AI assistant</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Bolt className="h-10 w-10 text-primary" />
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4 bg-background">
-          {messages.map((message, index) => (
-            <ChatMessage
-              key={index}
-              content={message.content}
-              type={message.type}
-            />
-          ))}
-          {loading && (
-            <div className="flex justify-center items-center p-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-        
-        <ChatInput onSend={handleSend} disabled={loading} />
       </div>
-    </div>
+      
+      <div className="flex h-[calc(100vh-88px)] bg-background">
+        <ConversationSidebar
+          currentSessionId={sessionId}
+          onSelectSession={setSessionId}
+          onNewChat={handleNewChat}
+        />
+        
+        <div className="flex-1 flex flex-col">
+          <div className="flex-1 overflow-y-auto p-4 bg-background">
+            {messages.map((message, index) => (
+              <ChatMessage
+                key={index}
+                content={message.content}
+                type={message.type}
+              />
+            ))}
+            {loading && (
+              <div className="flex justify-center items-center p-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+          
+          <ChatInput onSend={handleSend} disabled={loading} />
+        </div>
+      </div>
+    </>
   );
 };
 
