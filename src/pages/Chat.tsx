@@ -106,7 +106,7 @@ const Chat = () => {
             <p className="text-lg text-primary/90">First electrician with AI assistant</p>
           </div>
           <img 
-            src="/lovable-uploads/d171434d-dd9d-499c-b084-5ac32cdf1b0c.png" 
+            src="/lovable-uploads/ada1ee1d-68e6-49dc-b472-9a519e93d037.png" 
             alt="Electrician Logo" 
             className="h-32 w-32"
           />
