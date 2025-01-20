@@ -4,7 +4,6 @@ import axios from 'axios';
 import { supabase } from '@/lib/supabase';
 import ChatMessage from '@/components/ChatMessage';
 import ChatInput from '@/components/ChatInput';
-import ConversationSidebar from '@/components/ConversationSidebar';
 import { useToast } from '@/components/ui/use-toast';
 
 interface Message {
@@ -13,7 +12,7 @@ interface Message {
 }
 
 const Chat = () => {
-  const [sessionId, setSessionId] = useState(uuidv4());
+  const [sessionId] = useState(uuidv4());
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -92,11 +91,6 @@ const Chat = () => {
     }
   };
 
-  const handleNewChat = () => {
-    setSessionId(uuidv4());
-    setMessages([]);
-  };
-
   return (
     <div className="flex flex-col h-screen">
       <header className="bg-white py-6 px-4 border-b-2 border-primary flex-none">
@@ -114,12 +108,6 @@ const Chat = () => {
       </header>
       
       <main className="flex flex-1 min-h-0">
-        <ConversationSidebar
-          currentSessionId={sessionId}
-          onSelectSession={setSessionId}
-          onNewChat={handleNewChat}
-        />
-        
         <div className="flex-1 flex flex-col min-h-0">
           <div className="flex-1 overflow-y-auto p-4">
             {messages.map((message, index) => (
