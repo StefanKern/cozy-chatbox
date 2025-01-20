@@ -108,7 +108,7 @@ const Chat = () => {
           <img 
             src="/lovable-uploads/d171434d-dd9d-499c-b084-5ac32cdf1b0c.png" 
             alt="Electrician Logo" 
-            className="h-16 w-16"
+            className="h-32 w-32"
           />
         </div>
       </header>
