@@ -45,7 +45,6 @@ const Chat = () => {
 
     fetchMessages();
 
-    // Subscribe to new messages
     const subscription = supabase
       .channel('messages')
       .on(
@@ -90,11 +89,6 @@ const Chat = () => {
     } catch (error) {
       console.error('Error sending message:', error);
       setLoading(false);
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
     }
   };
 
@@ -112,6 +106,10 @@ const Chat = () => {
       />
       
       <div className="flex-1 flex flex-col">
+        <div className="bg-primary py-6 px-4 text-center">
+          <h1 className="text-4xl font-bold text-white mb-2">Maiers Electronic</h1>
+          <p className="text-lg text-white/90">First electrician with AI assistant</p>
+        </div>
         <div className="flex-1 overflow-y-auto p-4 bg-background">
           {messages.map((message, index) => (
             <ChatMessage
