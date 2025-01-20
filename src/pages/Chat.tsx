@@ -74,7 +74,7 @@ const Chat = () => {
     const requestId = uuidv4();
 
     try {
-      const response = await axios.post(
+      await axios.post(
         'https://stefankern.app.n8n.cloud/webhook/electrician-booking-agent',
         {
           query: content,
@@ -87,11 +87,8 @@ const Chat = () => {
           }
         }
       );
-
-      if (!response.data.success) {
-        throw new Error('Failed to send message');
-      }
     } catch (error) {
+      console.error('Error sending message:', error);
       setLoading(false);
       toast({
         title: "Error",
