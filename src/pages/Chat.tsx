@@ -78,9 +78,13 @@ const Chat = () => {
         'https://stefankern.app.n8n.cloud/webhook/electrician-booking-agent',
         {
           query: content,
-          user_id: 'Bearer 45548948915656118974/*74561514894894894456489asdf4sdaf4sad62f47sda8f4sdaf1sda26f1sa56fwa4sf9',
           request_id: requestId,
           session_id: sessionId,
+        },
+        {
+          headers: {
+            'Authorization': 'Bearer 45548948915656118974/*74561514894894894456489asdf4sdaf4sad62f47sda8f4sdaf1sda26f1sa56fwa4sf9'
+          }
         }
       );
 
