@@ -74,7 +74,6 @@ const Chat = () => {
 
   const handleSend = async (content: string) => {
     setLoading(true);
-    setMessages(prev => [...prev, { content, type: 'human' }]);
     const requestId = uuidv4();
 
     try {
