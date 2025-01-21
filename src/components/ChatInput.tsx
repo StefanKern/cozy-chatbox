@@ -15,9 +15,10 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim() && !isSubmitting) {
+      const messageToSend = message;
+      setMessage(''); // Clear message immediately
       setIsSubmitting(true);
-      await onSend(message);
-      setMessage('');
+      await onSend(messageToSend);
       setIsSubmitting(false);
     }
   };
