@@ -97,7 +97,7 @@ const Chat = () => {
         src="/lovable-uploads/4a75df5a-4cd6-49b9-80e5-0a471b621bbe.png"
         alt="Decorative ladder"
         className="absolute h-[70%] object-contain opacity-70 top-1/2 -z-10"
-        style={{ transform: 'translate(-12.5%, -25%)' }}
+        style={{ transform: 'translate(-35%, -25%)' }}
       />
       
       <header className="bg-white py-6 px-4 border-b-2 border-primary flex-none">
