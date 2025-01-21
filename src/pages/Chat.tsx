@@ -98,7 +98,7 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-screen relative">
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <img 
           src="/lovable-uploads/4a75df5a-4cd6-49b9-80e5-0a471b621bbe.png"
           alt="Decorative ladder"
