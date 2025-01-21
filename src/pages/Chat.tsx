@@ -13,7 +13,10 @@ interface Message {
 
 const Chat = () => {
   const [sessionId] = useState(uuidv4());
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([{
+    content: "🌟 Welcome! 🌟\nHi there! I'm your friendly booking assistant, here to make scheduling your appointment quick and hassle-free. Let me know when works best for you, and I'll handle the rest.\n\nLet's get started—your perfect appointment time is just a few clicks away! 😊",
+    type: 'ai'
+  }]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
