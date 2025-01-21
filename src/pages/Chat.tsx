@@ -117,7 +117,7 @@ const Chat = () => {
         <div className="flex items-center justify-between max-w-5xl mx-auto w-full">
           <div className="text-left">
             <h1 className="text-4xl font-bold text-primary mb-2">Maiers Electronic</h1>
-            <p className="text-lg text-primary/90">First electrician with AI assistant</p>
+            <p className="text-lg text-primary/90">Emergency AI booking agent</p>
           </div>
           <img 
             src="/lovable-uploads/ada1ee1d-68e6-49dc-b472-9a519e93d037.png" 
