@@ -103,7 +103,7 @@ const Chat = () => {
         src="/lovable-uploads/ea94ee82-b071-4eec-b0d8-9d9256a3ce02.png"
         alt="Decorative light bulb"
         className="absolute h-[30%] object-contain opacity-70 top-1/2 right-0 -z-10"
-        style={{ transform: 'translate(35%, -25%)' }}
+        style={{ transform: 'translate(5%, -95%)' }}
       />
       
       <header className="bg-white py-6 px-4 border-b-2 border-primary flex-none">
