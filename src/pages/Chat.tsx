@@ -42,7 +42,9 @@ const Chat = () => {
         return;
       }
 
-      setMessages(data.map(row => row.message as Message));
+      if (data && data.length > 0) {
+        setMessages(prev => [prev[0], ...data.map(row => row.message as Message)]);
+      }
     };
 
     fetchMessages();
@@ -95,7 +97,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen relative overflow-hidden">
+    <div className="flex flex-col h-screen relative">
       <div className="absolute inset-0 pointer-events-none">
         <img 
           src="/lovable-uploads/4a75df5a-4cd6-49b9-80e5-0a471b621bbe.png"
