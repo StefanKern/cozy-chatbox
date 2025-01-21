@@ -92,19 +92,21 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen relative">
-      <img 
-        src="/lovable-uploads/4a75df5a-4cd6-49b9-80e5-0a471b621bbe.png"
-        alt="Decorative ladder"
-        className="absolute h-[70%] object-contain opacity-70 top-1/2 -z-10"
-        style={{ transform: 'translate(-35%, -28%)' }}
-      />
-      <img 
-        src="/lovable-uploads/ea94ee82-b071-4eec-b0d8-9d9256a3ce02.png"
-        alt="Decorative light bulb"
-        className="absolute h-[30%] object-contain opacity-70 top-1/2 right-0 -z-10"
-        style={{ transform: 'translate(5%, -95%)' }}
-      />
+    <div className="flex flex-col h-screen relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <img 
+          src="/lovable-uploads/4a75df5a-4cd6-49b9-80e5-0a471b621bbe.png"
+          alt="Decorative ladder"
+          className="absolute h-[70%] object-contain opacity-70 top-1/2 -z-10"
+          style={{ transform: 'translate(-35%, -28%)' }}
+        />
+        <img 
+          src="/lovable-uploads/ea94ee82-b071-4eec-b0d8-9d9256a3ce02.png"
+          alt="Decorative light bulb"
+          className="absolute h-[30%] object-contain opacity-70 top-1/2 right-0 -z-10"
+          style={{ transform: 'translate(5%, -95%)' }}
+        />
+      </div>
       
       <header className="bg-white py-6 px-4 border-b-2 border-primary flex-none">
         <div className="flex items-center justify-between max-w-5xl mx-auto w-full">
