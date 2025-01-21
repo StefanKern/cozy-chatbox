@@ -61,7 +61,14 @@ const Chat = () => {
         },
         (payload) => {
           const newMessage = payload.new.message as Message;
-          setMessages(prev => [...prev, newMessage]);
+          // Check if the message is already in the messages array
+          setMessages(prev => {
+            const isDuplicate = prev.some(msg => 
+              msg.content === newMessage.content && 
+              msg.type === newMessage.type
+            );
+            return isDuplicate ? prev : [...prev, newMessage];
+          });
           setLoading(false);
         }
       )
@@ -74,6 +81,8 @@ const Chat = () => {
 
   const handleSend = async (content: string) => {
     setLoading(true);
+    // Show message immediately
+    setMessages(prev => [...prev, { content, type: 'human' }]);
     const requestId = uuidv4();
 
     try {
