@@ -92,7 +92,13 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen relative">
+      <img 
+        src="/lovable-uploads/4a75df5a-4cd6-49b9-80e5-0a471b621bbe.png"
+        alt="Decorative ladder"
+        className="absolute left-0 h-[70%] object-contain opacity-70 top-1/2 -translate-y-1/2"
+      />
+      
       <header className="bg-white py-6 px-4 border-b-2 border-primary flex-none">
         <div className="flex items-center justify-between max-w-5xl mx-auto w-full">
           <div className="text-left">
@@ -107,8 +113,8 @@ const Chat = () => {
         </div>
       </header>
       
-      <main className="flex flex-1 min-h-0">
-        <div className="flex-1 flex flex-col min-h-0">
+      <main className="flex flex-1 min-h-0 justify-center">
+        <div className="flex-1 flex flex-col min-h-0 max-w-5xl w-full">
           <div className="flex-1 overflow-y-auto p-4">
             {messages.map((message, index) => (
               <ChatMessage
