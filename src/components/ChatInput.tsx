@@ -10,12 +10,15 @@ interface ChatInputProps {
 
 const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim()) {
-      onSend(message);
+    if (message.trim() && !isSubmitting) {
+      setIsSubmitting(true);
+      await onSend(message);
       setMessage('');
+      setIsSubmitting(false);
     }
   };
 
@@ -27,7 +30,6 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type a message..."
           className="resize-none bg-chatbg text-foreground border-secondary/20"
-          disabled={disabled}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
@@ -37,7 +39,7 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
         />
         <Button 
           type="submit" 
-          disabled={disabled || !message.trim()}
+          disabled={isSubmitting || !message.trim()}
           className="bg-primary hover:bg-primary/90 text-white"
         >
           <Send className="h-4 w-4" />

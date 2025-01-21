@@ -74,6 +74,7 @@ const Chat = () => {
 
   const handleSend = async (content: string) => {
     setLoading(true);
+    setMessages(prev => [...prev, { content, type: 'human' }]);
     const requestId = uuidv4();
 
     try {
@@ -93,6 +94,11 @@ const Chat = () => {
     } catch (error) {
       console.error('Error sending message:', error);
       setLoading(false);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+      });
     }
   };
 
@@ -145,7 +151,7 @@ const Chat = () => {
             <div ref={messagesEndRef} />
           </div>
           
-          <ChatInput onSend={handleSend} disabled={loading} />
+          <ChatInput onSend={handleSend} />
         </div>
       </main>
     </div>
