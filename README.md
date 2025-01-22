@@ -31,7 +31,7 @@ After a suitable timeslot is booked, it collects required user information such 
 
 When all date is collected it summarizes the information and after a user confirmation, sends books the appointment.
 
-The complete workflow is defined in n8n, it's code can be found under [TODO]
+The complete workflow is defined in n8n, it's code can be found under [n8n-agent/Electrician_booking_agent.json](n8n-agent/Electrician_booking_agent.json)
 
 ## live studio
 
