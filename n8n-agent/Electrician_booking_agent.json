@@ -3,6 +3,7 @@
   "nodes": [
     {
       "parameters": {
+        "model": "gpt-4o",
         "options": {
           "responseFormat": "text"
         }
@@ -24,7 +25,7 @@
     },
     {
       "parameters": {
-        "content": "## Collect required data",
+        "content": "## Collect data and book appointment",
         "height": 620,
         "width": 640
       },
@@ -39,24 +40,6 @@
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "={{$('Prep Input Fields').item.json.query}}",
-        "options": {
-          "systemMessage": "=You are an appointment booking agent. You are capibal of collection data and checking when appointments are avalible.\n\nYour first task is to suggest available one-hour timeslots for scheduling, ensuring there are no double bookings. The available timeslots are from 8:00 AM to 12:00 PM and 1:00 PM to 5:00 PM, Monday to Friday.\n\nKey requirements:\n  - Do not suggest any timeslot that is already booked.\n  - Provide only one-hour intervals within the specified time range.\n  - Ensure there are no overlapping bookings in the suggested times.\n\nMorning Timeslots:\n  - 8:00 AM - 9:00 AM\n  - 9:00 AM - 10:00 AM\n  - 10:00 AM - 11:00 AM\n  - 11:00 AM - 12:00 PM\nAfternoon Timeslots:\n  - 1:00 PM - 2:00 PM\n  - 2:00 PM - 3:00 PM\n  - 3:00 PM - 4:00 PM\n  - 4:00 PM - 5:00 PM\n\nWhen providing this timeslots to the user, only show the ones still avalible.\n\nWhen asked for suggestions, review existing bookings and provide a list of only the available timeslots.\n\nAfter collect the start and enddate or duration first, then collect the following information (if not derivable from already previous information).\n\nAfter collection the start and enddate or duration collect\n    - name\n\t- issue description\n    - location\n    - phone number for final conformation (ask for it last)\n\nLastly provide a summery of the information the user has to confirm. The summary must contain\n  - start date (format 'yyyy-MM-dd HH:mm')\n  - end date (format 'yyyy-MM-dd HH:mm')\n  - issue description\n  - location\n  - phone number\n\nAfter the user confirmed that this information is currect, create a \"Your appointment for\". Do not use this pharse at any other time.\n\nKeep the conversation natural, do not overwhelm the user with information you can process.\n\nToday is {{ $now.format('cccc') }} the {{ $now.format('yyyy-MM-dd HH:mm') }}."
-        }
-      },
-      "id": "29963449-1dc1-487d-96f2-7ff0a5c3cd97",
-      "name": "Data collection agent",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
-      "position": [
-        560,
-        20
-      ],
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
         "descriptionType": "manual",
         "toolDescription": "Call this tool when you want to retrieve information about planned appointments.",
         "operation": "getAll",
@@ -68,9 +51,8 @@
         },
         "returnAll": true,
         "options": {
-          "timeMin": "={{ $fromAI('after', 'The earliest datetime we want to look for events for') }}",
-          "timeMax": "={{ $fromAI('before', 'The latest datetime we want to look for events for') }}",
-          "query": "={{ $fromAI('query', 'The search query to look for in the calendar. Leave empty if no search query is needed') }}",
+          "timeMin": "={{ $fromAI('after', 'The earliest datetime we want to look for events for. Always use the full day') }}",
+          "timeMax": "={{ $fromAI('before', 'The latest datetime we want to look for events for.  Always use the full day') }}",
           "singleEvents": true
         }
       },
@@ -244,7 +226,7 @@
       "typeVersion": 1.2,
       "position": [
         820,
-        260
+        220
       ],
       "id": "60ea87c9-8fb8-49ca-9f1a-319e93b99a13",
       "name": "Google Calendar",
@@ -254,6 +236,24 @@
           "name": "Google Calendar account"
         }
       }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$('Prep Input Fields').item.json.query}}",
+        "options": {
+          "systemMessage": "=You are an appointment booking agent. You are capibal of collection data and checking when appointments are avalible.\n\nYour first task is to suggest available one-hour timeslots for scheduling, ensuring there are no double bookings. Check the callendar first, to see which timeslots are avalible. suggest the following timeslots if there are no appointments found there.\n\nMorning Timeslots:\n  - 8:00 AM - 9:00 AM\n  - 9:00 AM - 10:00 AM\n  - 10:00 AM - 11:00 AM\n  - 11:00 AM - 12:00 AM\nAfternoon Timeslots:\n  - 1:00 PM - 2:00 PM\n  - 2:00 PM - 3:00 PM\n  - 3:00 PM - 4:00 PM\n  - 4:00 PM - 5:00 PM\n\nWhen providing this timeslots to the user, only show the ones still which do not have a booking.\n\nAfter collect the start and enddate or duration first, then collect the following information (if not derivable from already previous information).\n\nAfter collection the start and enddate or duration collect\n    - name\n\t- issue description\n    - location\n    - phone number for final conformation (ask for it last)\n\nLastly provide a summery of the information the user has to confirm. The summary must contain\n  - start date (format 'yyyy-MM-dd HH:mm')\n  - end date (format 'yyyy-MM-dd HH:mm')\n  - issue description\n  - location\n  - phone number\n\nAfter the user confirmed that this information is currect, create a \"Your appointment for\". Do not use this pharse at any other time.\n\nKeep the conversation natural, do not overwhelm the user with information you can process.\n\nToday is {{ $now.format('cccc') }} the {{ $now.format('yyyy-MM-dd HH:mm') }}."
+        }
+      },
+      "id": "29963449-1dc1-487d-96f2-7ff0a5c3cd97",
+      "name": "AI agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        560,
+        20
+      ],
+      "alwaysOutputData": true
     }
   ],
   "pinData": {
@@ -292,19 +292,8 @@
       "ai_languageModel": [
         [
           {
-            "node": "Data collection agent",
+            "node": "AI agent",
             "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Data collection agent": {
-      "main": [
-        [
-          {
-            "node": "Prep Output Fields",
-            "type": "main",
             "index": 0
           }
         ]
@@ -314,7 +303,7 @@
       "ai_tool": [
         [
           {
-            "node": "Data collection agent",
+            "node": "AI agent",
             "type": "ai_tool",
             "index": 0
           }
@@ -336,7 +325,7 @@
       "ai_memory": [
         [
           {
-            "node": "Data collection agent",
+            "node": "AI agent",
             "type": "ai_memory",
             "index": 0
           }
@@ -347,7 +336,7 @@
       "main": [
         [
           {
-            "node": "Data collection agent",
+            "node": "AI agent",
             "type": "main",
             "index": 0
           }
@@ -369,8 +358,19 @@
       "ai_tool": [
         [
           {
-            "node": "Data collection agent",
+            "node": "AI agent",
             "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI agent": {
+      "main": [
+        [
+          {
+            "node": "Prep Output Fields",
+            "type": "main",
             "index": 0
           }
         ]
@@ -381,7 +381,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "8e3b33cd-8a1b-4302-9891-c1be3cbf59fe",
+  "versionId": "0dbfd535-a88f-4296-b5b6-8bd725b72a0f",
   "meta": {
     "templateId": "PT1i+zU92Ii5O2XCObkhfHJR5h9rNJTpiCIkYJk9jHU=",
     "instanceId": "5f2f7e142efee59a24d31659cb0f5791b146ea0dc04ce393a16fdabfe31c0ee2"
