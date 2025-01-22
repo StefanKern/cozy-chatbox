@@ -1,0 +1,391 @@
+{
+  "name": "Electrician booking agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "responseFormat": "text"
+        }
+      },
+      "id": "cbaedf86-9153-4778-b893-a7e50d3e04ba",
+      "name": "OpenAI Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        500,
+        220
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ZSCJcXXN053MbqeE",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Collect required data",
+        "height": 620,
+        "width": 640
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        420,
+        -60
+      ],
+      "id": "8736a264-c252-43d8-a653-71dce6cbaf35",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$('Prep Input Fields').item.json.query}}",
+        "options": {
+          "systemMessage": "=You are an appointment booking agent. You are capibal of collection data and checking when appointments are avalible.\n\nYour first task is to suggest available one-hour timeslots for scheduling, ensuring there are no double bookings. The available timeslots are from 8:00 AM to 12:00 PM and 1:00 PM to 5:00 PM, Monday to Friday.\n\nKey requirements:\n  - Do not suggest any timeslot that is already booked.\n  - Provide only one-hour intervals within the specified time range.\n  - Ensure there are no overlapping bookings in the suggested times.\n\nMorning Timeslots:\n  - 8:00 AM - 9:00 AM\n  - 9:00 AM - 10:00 AM\n  - 10:00 AM - 11:00 AM\n  - 11:00 AM - 12:00 PM\nAfternoon Timeslots:\n  - 1:00 PM - 2:00 PM\n  - 2:00 PM - 3:00 PM\n  - 3:00 PM - 4:00 PM\n  - 4:00 PM - 5:00 PM\n\nWhen providing this timeslots to the user, only show the ones still avalible.\n\nWhen asked for suggestions, review existing bookings and provide a list of only the available timeslots.\n\nAfter collect the start and enddate or duration first, then collect the following information (if not derivable from already previous information).\n\nAfter collection the start and enddate or duration collect\n    - name\n\t- issue description\n    - location\n    - phone number for final conformation (ask for it last)\n\nLastly provide a summery of the information the user has to confirm. The summary must contain\n  - start date (format 'yyyy-MM-dd HH:mm')\n  - end date (format 'yyyy-MM-dd HH:mm')\n  - issue description\n  - location\n  - phone number\n\nAfter the user confirmed that this information is currect, create a \"Your appointment for\". Do not use this pharse at any other time.\n\nKeep the conversation natural, do not overwhelm the user with information you can process.\n\nToday is {{ $now.format('cccc') }} the {{ $now.format('yyyy-MM-dd HH:mm') }}."
+        }
+      },
+      "id": "29963449-1dc1-487d-96f2-7ff0a5c3cd97",
+      "name": "Data collection agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        560,
+        20
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool when you want to retrieve information about planned appointments.",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "1029d713e6818b51493bdf87e16768777012903fb80e10d77b94df7b9c160cc3@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "hackathon test calendar"
+        },
+        "returnAll": true,
+        "options": {
+          "timeMin": "={{ $fromAI('after', 'The earliest datetime we want to look for events for') }}",
+          "timeMax": "={{ $fromAI('before', 'The latest datetime we want to look for events for') }}",
+          "query": "={{ $fromAI('query', 'The search query to look for in the calendar. Leave empty if no search query is needed') }}",
+          "singleEvents": true
+        }
+      },
+      "id": "0d7e4666-bc0e-489a-9e8f-a5ef191f4954",
+      "name": "Get google appointments",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        360
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "HWSnfALd1Do8mC9c",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "electrician-booking-agent",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "2995ad98-25c9-4f51-9d6f-c643ccbce15f",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        40,
+        20
+      ],
+      "webhookId": "d9fec84b-86f0-4230-9fd4-c1cb392ff8b5",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "qKkB5QkttGCQiknf",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "X-n8n-Signature",
+                "value": "EvtIS^EBVISeie6svB@6ev"
+              }
+            ]
+          }
+        }
+      },
+      "id": "ad22e163-08b8-447a-a2ef-8dc1ed647f34",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1340,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{$('Prep Input Fields').item.json.session_id}}",
+        "tableName": "messages",
+        "contextWindowLength": 10
+      },
+      "id": "e693b349-f9e5-4bb5-b432-b9d5c27ef6c7",
+      "name": "Postgres Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        580,
+        360
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "o9zRaUAAscmB0Sht",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ee2bcd57-3b4c-43f9-b4b7-3a25687b9a68",
+              "name": "query",
+              "value": "={{ $json.body.query }}",
+              "type": "string"
+            },
+            {
+              "id": "63f23e51-af2b-47c4-a288-5abaf9b6c357",
+              "name": "user_id",
+              "value": "={{ $json.body.user_id }}",
+              "type": "string"
+            },
+            {
+              "id": "b97a3670-8a87-481b-8695-db44624be7d8",
+              "name": "request_id",
+              "value": "={{ $json.body.request_id }}",
+              "type": "string"
+            },
+            {
+              "id": "7d3fa06d-08f7-4517-b9c5-3c46ff476f55",
+              "name": "session_id",
+              "value": "={{ $json.body.session_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "87e342bb-cc4f-4316-a5eb-7ebb0b64a244",
+      "name": "Prep Input Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b5eaa2a2-a6bc-40ab-af5e-baa8a5dda1a7",
+              "name": "success",
+              "value": "=true",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2a5b26c8-cd2f-4f21-ba3a-fa9edeb7f7bc",
+      "name": "Prep Output Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1160,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "1029d713e6818b51493bdf87e16768777012903fb80e10d77b94df7b9c160cc3@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "hackathon test calendar"
+        },
+        "start": "={{ $fromAi('start', 'the date at which the appointment should started formatted as date-time.') }}",
+        "end": "={{ $fromAi('end', 'the date at which the appointment should end formatted as date-time.') }}",
+        "additionalFields": {
+          "description": "={{ $fromAi('description', 'description of the problem and the customer information') }}",
+          "location": "={{ $fromAi('location', 'he location of the appointment.') }}",
+          "summary": "={{ $fromAi('sumary', 'short summary with description and customer name') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        820,
+        260
+      ],
+      "id": "60ea87c9-8fb8-49ca-9f1a-319e93b99a13",
+      "name": "Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "HWSnfALd1Do8mC9c",
+          "name": "Google Calendar account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.[your n8n url].com",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+            "content-length": "192",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip",
+            "authorization": "Bearer YOUR BEARER TOKEN",
+            "content-type": "application/json",
+            "x-forwarded-for": "64.227.21.251",
+            "x-forwarded-host": "n8n.[your n8n url].com",
+            "x-forwarded-proto": "https",
+            "x-real-ip": "2601:441:4380:40b0:b4b3:724b:27e1:c4ba"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "query": "Supabase",
+            "user_id": "google-oauth2|116467443974012389959",
+            "request_id": "f98asdyf987yasd0f987asdf8",
+            "session_id": "google-oauth2|116467443974012389959~2~8dfbddbe603d"
+          },
+          "webhookUrl": "https://n8n.[your n8n url].com/webhook-test/invoke-agent",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "OpenAI Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Data collection agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data collection agent": {
+      "main": [
+        [
+          {
+            "node": "Prep Output Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get google appointments": {
+      "ai_tool": [
+        [
+          {
+            "node": "Data collection agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prep Input Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Data collection agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep Input Fields": {
+      "main": [
+        [
+          {
+            "node": "Data collection agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep Output Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Data collection agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8e3b33cd-8a1b-4302-9891-c1be3cbf59fe",
+  "meta": {
+    "templateId": "PT1i+zU92Ii5O2XCObkhfHJR5h9rNJTpiCIkYJk9jHU=",
+    "instanceId": "5f2f7e142efee59a24d31659cb0f5791b146ea0dc04ce393a16fdabfe31c0ee2"
+  },
+  "id": "rrL4hnxL0hUx4xNA",
+  "tags": []
+}
