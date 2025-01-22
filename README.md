@@ -31,7 +31,9 @@ After a suitable timeslot is booked, it collects required user information such 
 
 When all date is collected it summarizes the information and after a user confirmation, sends books the appointment.
 
-The complete workflow is defined in n8n, it's code can be found under [n8n-agent/Electrician_booking_agent.json](n8n-agent/Electrician_booking_agent.json)
+The complete workflow is defined in n8n, it's code can be found under [n8n-agent/Electrician_booking_agent.json](n8n-agent/Electrician_booking_agent.json).
+
+Appointments are saved in a public [https://calendar.google.com/calendar/embed?src=1029d713e6818b51493bdf87e16768777012903fb80e10d77b94df7b9c160cc3%40group.calendar.google.com&ctz=Europe%2FVienna](google calendar).
 
 ## live studio
 
